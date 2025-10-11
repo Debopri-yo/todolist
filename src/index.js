@@ -1,12 +1,21 @@
 import './styles/style.css';
-import { createTodoItem } from './dom.js';
-import { createTodo } from './todo.js';
-const btn = document.getElementById('btn');
-btn.addEventListener('click', () => {
-    const todoList = document.createElement('ul');
-    todoList.id = 'todo-list';
-    const todo = createTodo("Buy milk", "2L of milk", "2025-10-07");
-    const todoElement = createTodoItem(todo);
-    const container = document.getElementById('todo-container');
-    container.appendChild(todoElement);
-})
+//import { createTodoItem } from './dom.js';
+//import { createTodo } from './todo.js';
+import { createProjectItem } from './dom.js';
+import { createProject } from './project.js';
+import { renderProjects } from './project.js';
+let projects = [];
+const newProject = document.getElementById('new-project');
+newProject.addEventListener('click', () => {
+    const container = document.querySelector('#projects-container');
+    const projectList = document.createElement('ul');
+    projectList.id = 'project-list';
+    const project = createProject("Grocery shopping", "Weekly grocery shopping");
+    const projectElement = createProjectItem(project);
+    projects.push(project);
+    container.appendChild(projectElement);
+});
+function deleteProject(index) {
+  projects.splice(index, 1);
+  renderProjects(projects, deleteProject);
+}
