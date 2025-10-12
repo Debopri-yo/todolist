@@ -3,7 +3,6 @@ import './styles/style.css';
 //import { createTodo } from './todo.js';
 import { createProjectItem } from './dom.js';
 import { createProject } from './project.js';
-import { renderProjects } from './project.js';
 let projects = [];
 const newProject = document.getElementById('new-project');
 newProject.addEventListener('click', () => {
@@ -15,7 +14,6 @@ newProject.addEventListener('click', () => {
     projects.push(project);
     container.appendChild(projectElement);
 });
-function deleteProject(index) {
-  projects.splice(index, 1);
-  renderProjects(projects, deleteProject);
+export function deleteProject(id) {
+  projects.splice(id, 1);
 }

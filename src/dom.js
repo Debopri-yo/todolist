@@ -1,4 +1,4 @@
-import { delproject } from "./project";
+import { deleteProject } from "./index.js";
 
 export function createTodoItem(todo){
     const todoDiv = document.createElement('div');
@@ -17,7 +17,7 @@ export function createTodoItem(todo){
     todoDiv.appendChild(description);
     todoDiv.appendChild(dueDate);
     return todoDiv;
-}
+};
 export function createProjectItem(project){
     const projectDiv = document.createElement('div');
     projectDiv.className = 'project-item';
@@ -25,11 +25,13 @@ export function createProjectItem(project){
     title.textContent = project.title;
     const description = document.createElement('p');
     description.textContent = project.description;
+    const id=project.id;
     let removeButton = document.createElement('button');
     removeButton.id = 'del-project'
     removeButton.textContent="Delete Project";
     removeButton.addEventListener('click', () => {
-        delproject(project);
+        deleteProject(id);
+        projectDiv.remove();
     });
     projectDiv.appendChild(removeButton);
     projectDiv.appendChild(title);
@@ -39,14 +41,4 @@ export function createProjectItem(project){
     addTodo.textContent="Add Task";    
     projectDiv.appendChild(addTodo);
     return projectDiv;
-}
-export function renderProjects(projects){
-    const container = document.querySelector('#projects-container');
-    const projectList = document.createElement('ul');
-    projectList.id = 'project-list';
-    projects.forEach((project) => {
-    const div = document.createElement('div');
-    div.textContent = project.name;
-    container.appendChild(div);
-    });
-}
+};
