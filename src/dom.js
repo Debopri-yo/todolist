@@ -1,5 +1,5 @@
 import { deleteProject } from "./index.js";
-
+import { createTodo } from "./todo.js";
 export function createTodoItem(todo){
     const todoDiv = document.createElement('div');
     todoDiv.className = 'todo-item';
@@ -8,11 +8,7 @@ export function createTodoItem(todo){
     const description = document.createElement('p');
     description.textContent = todo.description;
     const dueDate = document.createElement('p');
-    dueDate.textContent = `Due: ${todo.dueDate}`;
-    let removeButton = document.createElement('button');
-    removeButton.id = 'del-todo'
-    removeButton.textContent="Delete Task";    
-    todoDiv.appendChild(removeButton);
+    dueDate.textContent = `Due: ${todo.dueDate}`;  
     todoDiv.appendChild(title);
     todoDiv.appendChild(description);
     todoDiv.appendChild(dueDate);
@@ -38,7 +34,22 @@ export function createProjectItem(project){
     projectDiv.appendChild(description);
     let addTodo = document.createElement('button');
     addTodo.id = 'add-todo'
-    addTodo.textContent="Add Task";    
+    addTodo.textContent="Add Task";
+    addTodo.addEventListener('click', () => {
+    const newTodo=createTodo("title", "description", "dueDate", "priority")
+    project.addTodo(newTodo);
+    const todoElement = createTodoItem(newTodo);
+    let removeTodo = document.createElement('button');
+    removeTodo.id = 'del-todo'
+    removeTodo.textContent="Delete Task";
+    removeTodo.addEventListener('click', () => {
+        project.deleteTodo(newTodo);
+        todoElement.remove();
+        removeTodo.remove();
+    });  
+    projectDiv.appendChild(todoElement);
+    projectDiv.appendChild(removeTodo);
+    });   
     projectDiv.appendChild(addTodo);
     return projectDiv;
 };

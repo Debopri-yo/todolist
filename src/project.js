@@ -3,6 +3,9 @@ export function createProject(title, description) {
     const addTodo = (todo) => {
         todos.push(todo);
     };
+    const deleteTodo = (todo) => {
+        todos.splice(todo,1);
+    }
     const id=crypto.randomUUID();
-    return { title, description, todos ,addTodo,id};
+    return { title, description, todos ,addTodo,id,deleteTodo};
 };
