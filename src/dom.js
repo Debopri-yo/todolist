@@ -38,18 +38,25 @@ export function createProjectItem(project){
     addTodo.addEventListener('click', () => {
     const newTodo=createTodo("title", "description", "dueDate", "priority")
     project.addTodo(newTodo);
-    const todoElement = createTodoItem(newTodo);
-    let removeTodo = document.createElement('button');
-    removeTodo.id = 'del-todo'
-    removeTodo.textContent="Delete Task";
-    removeTodo.addEventListener('click', () => {
-        project.deleteTodo(newTodo);
-        todoElement.remove();
-        removeTodo.remove();
-    });  
-    projectDiv.appendChild(todoElement);
-    projectDiv.appendChild(removeTodo);
+    renderTodos(project, document.querySelector('#tasks-container'));
     });   
     projectDiv.appendChild(addTodo);
     return projectDiv;
 };
+export function renderTodos(project, container) {
+    container.innerHTML = '';
+    const todos=project.getTodos();
+    todos.forEach((todo) => {
+        const todoElement = createTodoItem(todo);
+        container.appendChild(todoElement);
+        let removeTodo = document.createElement('button');
+        removeTodo.id = 'del-todo'
+        removeTodo.textContent="Delete Task";
+        removeTodo.addEventListener('click', () => {
+        project.deleteTodo(todo);
+        todoElement.remove();
+        removeTodo.remove();
+    });
+    container.appendChild(removeTodo);
+    });
+}

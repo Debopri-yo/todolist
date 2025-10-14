@@ -7,5 +7,10 @@ export function createProject(title, description) {
         todos.splice(todo,1);
     }
     const id=crypto.randomUUID();
-    return { title, description, todos ,addTodo,id,deleteTodo};
+    let selected=false;
+    const toggleSelected=()=>{
+        selected=!selected;
+    }
+    const getTodos = () => todos;
+    return { title, description, todos ,addTodo,id,deleteTodo,selected,toggleSelected,getTodos};
 };
