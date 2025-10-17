@@ -1,5 +1,8 @@
 import { deleteProject } from "./index.js";
 import { createTodo } from "./todo.js";
+import { addProject } from "./index.js";
+import { createProject } from "./project.js";
+import { format } from 'date-fns';
 export function createTodoItem(todo){
     const todoDiv = document.createElement('div');
     todoDiv.className = 'todo-item';
@@ -8,7 +11,7 @@ export function createTodoItem(todo){
     const description = document.createElement('p');
     description.textContent = todo.description;
     const dueDate = document.createElement('p');
-    dueDate.textContent = `Due: ${todo.dueDate}`;  
+    dueDate.textContent = `Due: ${format(new Date(todo.dueDate), 'MMM dd, yyyy')}`; 
     if(todo.priority==="High"){ 
         todoDiv.classList.add('priority-high');
     } else if (todo.priority==="Mid"){
@@ -33,8 +36,7 @@ export function createProjectItem(project){
     addTodo.id = 'add-todo'
     addTodo.textContent="Add Task";
     addTodo.addEventListener('click', () => {
-    const newTodo=createTodo("title", "description", "dueDate", "High")
-    project.addTodo(newTodo);
+    showTodoForm(project);
     renderTodos(project, document.querySelector('#tasks-container'));
     });   
     let removeButton = document.createElement('button');
@@ -76,4 +78,40 @@ export function renderTodos(project, container) {
     container.appendChild(removeTodo);
     container.appendChild(toggleCompleted);
     });
+}
+export function showProjectForm(){
+    const dialogElem = document.getElementById("project-dialog");
+    dialogElem.showModal();
+    const form = document.getElementById("project-form");
+    form.addEventListener("submit",(event)=>{
+    event.preventDefault();
+    const title=document.getElementById("project-name").value;
+    const desc=document.getElementById("project-desc").value;
+    form.reset();
+    dialogElem.close();
+    addProject(createProject(title,desc));
+});
+}
+export function showTodoForm(project){
+    const dialogElem = document.getElementById("todo-dialog");
+    dialogElem.showModal();
+    const form = document.getElementById("todo-form");
+    form.addEventListener("submit",(event)=>{
+    event.preventDefault();
+    const title=document.getElementById("todo-name").value;
+    const desc=document.getElementById("todo-desc").value;
+    let priority;
+    const priorityElements = document.getElementsByName("priority");
+    for (const elem of priorityElements) {
+        if (elem.checked) {
+            priority = elem.value;
+            break;
+        }
+    }
+    let dueDate=document.getElementById("todo-duedate").value;
+    form.reset();
+    dialogElem.close();
+    project.addTodo(createTodo(title,desc,dueDate,priority));
+    renderTodos(project, document.querySelector('#tasks-container'));
+});
 }

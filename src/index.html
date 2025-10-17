@@ -6,7 +6,37 @@
     <title>todo-list</title>
   </head>
   <body>
-    
+    <dialog id="project-dialog">
+      <form method="dialog" id="project-form">
+        <label for="project-name">Project Name:</label>
+        <input type="text" id="project-name" name="project-name" required />
+        <br />
+        <label for="project-desc">Project Description:</label>
+        <input type="text" id="project-desc" name="project-desc" />
+        <br />
+        <button type="submit">Create Project</button>
+      </form>
+    </dialog>
+    <dialog id="todo-dialog">
+      <form method="dialog" id="todo-form">
+        <label for="todo-name">Todo Name:</label>
+        <input type="text" id="todo-name" name="todo-name" required />
+        <br />
+        <label for="todo-desc">todo Description:</label>
+        <input type="text" id="todo-desc" name="todo-desc" />
+        <br />
+        <input type="radio" id="High" name="priority" value="High" checked>
+        <label for="High">High</label><br>
+
+        <input type="radio" id="Mid" name="priority" value="Mid">
+        <label for="Mid">Mid</label><br>
+
+        <input type="radio" id="low" name="priority" value="low">
+        <label for="low">Low</label><br><br>
+        <input type="date" id="todo-duedate" required>
+        <button type="submit">Create Todo</button>
+      </form>
+    </dialog>
     <div class="sidenav">
       <h1>Projects</h1>
       <button id="new-project">new project</button>
