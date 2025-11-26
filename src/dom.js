@@ -3,6 +3,7 @@ import { createTodo } from "./todo.js";
 import { addProject } from "./index.js";
 import { createProject } from "./project.js";
 import { format } from 'date-fns';
+import { tr } from "date-fns/locale";
 export function createTodoItem(todo){
     const todoDiv = document.createElement('div');
     todoDiv.className = 'todo-item';
@@ -19,7 +20,6 @@ export function createTodoItem(todo){
     } else {
         todoDiv.classList.add('priority-low');
     }
-    console.log(todo.priority);
     todoDiv.appendChild(title);
     todoDiv.appendChild(description);
     todoDiv.appendChild(dueDate);
@@ -53,6 +53,12 @@ export function createProjectItem(project){
 export function renderTodos(project, container) {
     container.innerHTML = '';
     const todos=project.getTodos();
+    if(todos.length===0){
+        const noTaskMsg = document.createElement('p');
+        noTaskMsg.textContent = "No tasks available. Please add a task.";
+        container.appendChild(noTaskMsg);
+        return;
+    }
     const projectTitle= document.getElementById('project-title');
     projectTitle.textContent=project.title;
     const description = document.createElement('p');
@@ -74,15 +80,17 @@ export function renderTodos(project, container) {
         toggleCompleted.textContent="Mark as Done";
         toggleCompleted.addEventListener('click',() => {
             todo.toggleCompleted();
+            todoElement.classList.toggle('completed');
         });
     container.appendChild(removeTodo);
     container.appendChild(toggleCompleted);
     });
 }
+let projectFormInitialized=false;
 export function showProjectForm(){
     const dialogElem = document.getElementById("project-dialog");
-    dialogElem.showModal();
     const form = document.getElementById("project-form");
+    if(!projectFormInitialized){
     form.addEventListener("submit",(event)=>{
     event.preventDefault();
     const title=document.getElementById("project-name").value;
@@ -90,12 +98,16 @@ export function showProjectForm(){
     form.reset();
     dialogElem.close();
     addProject(createProject(title,desc));
-});
+    });
+        projectFormInitialized=true;
+    }
+    dialogElem.showModal();
 }
+let todoFormInitialized=false;
 export function showTodoForm(project){
     const dialogElem = document.getElementById("todo-dialog");
-    dialogElem.showModal();
     const form = document.getElementById("todo-form");
+    if(!todoFormInitialized){
     form.addEventListener("submit",(event)=>{
     event.preventDefault();
     const title=document.getElementById("todo-name").value;
@@ -113,5 +125,8 @@ export function showTodoForm(project){
     dialogElem.close();
     project.addTodo(createTodo(title,desc,dueDate,priority));
     renderTodos(project, document.querySelector('#tasks-container'));
-});
+    });
+    todoFormInitialized=true;
+    }
+    dialogElem.showModal();
 }
